@@ -13,15 +13,14 @@ import {
   ActivityIndicator
 } from "react-native";
 import { NavigationContainer, useRoute } from "@react-navigation/native";
-import { useIsFocused } from "@react-navigation/native";
 
 import { WebView } from "react-native-webview";
 import axios from "axios";
 import Ionicons from "@expo/vector-icons/Ionicons";
+// @ts-ignore
+import { BASEURL, BAGISURL } from "@env"
 
-const baseUrl = "https://ruya.caserver.org/";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 interface ItemIT {
   rid?: string | number;
   title?: string;
@@ -140,7 +139,7 @@ export default function App(this: any) {
     async function getDream() {
       await axios<ItemIT>({
         method: "get",
-        url: `${baseUrl}?t=show&id=${rid}`,
+        url: `${BASEURL}?t=show&id=${rid}`,
       })
         .then((res) => {
           const style = `<style>
@@ -174,9 +173,10 @@ export default function App(this: any) {
     return <WebView originWhitelist={["*"]} style={[{backgroundColor: bgColor }]} source={{ html: content }} />;
   }
   function BagisScreen() {
+
     let [bagis, setBagis] = React.useState("");
     async function getPage() {
-      await axios<string>("http://monolabdevs.com/api/bagis/")
+      await axios<string>(BAGISURL)
         .then((res) => {
           const style = `<style>
           .container {
@@ -216,7 +216,7 @@ export default function App(this: any) {
     setLoader(true);
     await axios<ListIT>({
       method: "get",
-      url: `${baseUrl}?t=search&q=${searchQuery}`,
+      url: `${BASEURL}?t=search&q=${searchQuery}`,
     })
       .then((res) => {
         setRlist(res.data);
